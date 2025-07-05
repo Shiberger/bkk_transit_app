@@ -1,9 +1,13 @@
 import json
 import heapq
+import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 
 # --- Initialization ---
 app = Flask(__name__)
+
+load_dotenv()  # Load environment variables from .env file
 
 # --- Data Loading ---
 def load_data():
@@ -205,4 +209,8 @@ def find_route_endpoint():
 
 # --- Main Execution ---
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002, debug=True)
+    # Use the PORT from the .env file, defaulting to 5002 if it's not set
+    port = int(os.environ.get('PORT', 5002))
+    # Note: debug=True is removed for safety. 
+    # Gunicorn does not use this block in production.
+    app.run(host='0.0.0.0', port=port)
