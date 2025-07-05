@@ -9,6 +9,7 @@ class RouteStep {
   final int stops;
   final String fromStation;
   final String toStation;
+  final String operatingHours;
 
   RouteStep({
     required this.type,
@@ -19,6 +20,7 @@ class RouteStep {
     this.stops = 0,
     this.fromStation = '',
     this.toStation = '',
+    this.operatingHours = '',
   });
 
   factory RouteStep.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class RouteStep {
       stops: json['stops'] ?? 0,
       fromStation: json['from_station'] ?? '',
       toStation: json['to_station'] ?? '',
+      operatingHours: json['operating_hours'] ?? '',
     );
   }
 }

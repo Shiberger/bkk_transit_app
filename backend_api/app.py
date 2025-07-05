@@ -16,9 +16,12 @@ lines_map = {l['line_id']: l for l in transit_data['lines']}
 
 # --- Core Logic: Graph & Pathfinding ---
 
-def build_graph():
+def build_graph(preference='fastest'): # Add preference parameter
     """Builds a graph representation from the transit data."""
     graph = {s_id: {} for s_id in stations_map}
+
+    # A high weight to penalize transfers if user wants the fewest
+    transfer_penalty = 1000 if preference == 'fewest_transfers' else 0
 
     # Add edges for stations on the same line
     for line in lines_map.values():
@@ -31,10 +34,11 @@ def build_graph():
     # Add edges for transfers
     for transfer in transit_data['transfers']:
         u, v = transfer['from_station_id'], transfer['to_station_id']
-        weight = transfer['transfer_time']
+        # Add the penalty to the transfer time
+        weight = transfer['transfer_time'] + transfer_penalty
         graph[u][v] = weight
         graph[v][u] = weight
-        
+
     return graph
 
 def dijkstra(graph, start_id, end_id):
@@ -149,14 +153,22 @@ def format_path_as_steps(path, total_time):
             "type": "board",
             "line_name": current_line['line_name'],
             "line_color": current_line['color'],
+            "operating_hours": current_line.get('operating_hours', 'N/A'),
             "start_station": stations_map[segment_start_station_id]['name'],
             "end_station": stations_map[path[-1]]['name'],
             "stops": stops,
         })
     
+    # --- New Fare Calculation Logic ---
+    base_fare = 16  # Example base fare
+    fare_per_station = 3 # Example cost per station
+    estimated_fare = base_fare + (len(path) - 1) * fare_per_station
+    # --- End New Fare Logic ---
+
     return {
         "total_time": total_time,
-        "total_stations": len(path) -1,
+        "total_stations": len(path) - 1,
+        "estimated_fare": estimated_fare, # Add fare to the response
         "steps": steps
     }
 
@@ -180,7 +192,8 @@ def find_route_endpoint():
     if start_id == end_id:
         return jsonify({"error": "Start and destination cannot be the same"}), 400
 
-    graph = build_graph()
+    preference = data.get('preference', 'fastest')
+    graph = build_graph(preference)
     total_time, path = dijkstra(graph, start_id, end_id)
 
     if total_time == float('inf'):

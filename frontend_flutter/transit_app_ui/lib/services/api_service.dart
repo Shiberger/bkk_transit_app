@@ -22,7 +22,7 @@ class ApiService {
   }
 
   // Fetches the list of all stations from the backend
-    Future<RouteResult> findRoute(String startStationId, String endStationId) async {
+    Future<RouteResult> findRoute(String startStationId, String endStationId, String preference) async {
     final response = await http.post(
       Uri.parse('$baseUrl/route'),
       headers: <String, String>{
@@ -31,6 +31,7 @@ class ApiService {
       body: jsonEncode(<String, String>{
         'start_station_id': startStationId,
         'end_station_id': endStationId,
+        'preference': preference,
       }),
     );
 
