@@ -29,6 +29,7 @@
       "line_name": "BTS Sukhumvit Line",
       "color": "#76B852",
       "station_ids": ["N8", "N7", "N5", "N4", "N3", "N2", "N1", "CEN", "E1", "E2", "E3", "E4"],
+      "operating_hours": "6:00 - 24:00",
       "travel_time_between_stations": 3
     },
     {
@@ -36,6 +37,7 @@
       "line_name": "BTS Silom Line",
       "color": "#00885A",
       "station_ids": ["W1", "CEN", "S1", "S2"],
+      "operating_hours": "6:00 - 24:00",
       "travel_time_between_stations": 3
     },
     {
@@ -43,8 +45,10 @@
       "line_name": "MRT Blue Line",
       "color": "#00529C",
       "station_ids": ["BL13", "BL14", "BL15", "BL21", "BL22", "BL25", "BL26"],
+      "operating_hours": "6:00 - 24:00",
       "travel_time_between_stations": 4
     }
+    
   ],
   "transfers": [
     { "from_station_id": "N8", "to_station_id": "BL13", "transfer_time": 8 },
