@@ -1,9 +1,3 @@
-Of course. It's a great practice to keep your `README.md` file updated as your project evolves. The recent changes to make the backend production-ready are significant, and the instructions for running the project have changed.
-
-Here is the updated `README.md` file that reflects the use of Gunicorn and environment variables for your backend.
-
------
-
 # BKK Transit Route Finder App
 
 A mobile application built with Flutter and Python to help users find optimal public transit routes in Bangkok, Thailand, using the BTS and MRT train systems.
