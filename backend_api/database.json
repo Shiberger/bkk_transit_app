@@ -1,0 +1,54 @@
+{
+  "stations": [
+    { "id": "N8", "name": "Mo Chit" },
+    { "id": "N7", "name": "Saphan Khwai" },
+    { "id": "N5", "name": "Ari" },
+    { "id": "N4", "name": "Sanam Pao" },
+    { "id": "N3", "name": "Victory Monument" },
+    { "id": "N2", "name": "Phaya Thai" },
+    { "id": "N1", "name": "Ratchathewi" },
+    { "id": "CEN", "name": "Siam" },
+    { "id": "E1", "name": "Chit Lom" },
+    { "id": "E2", "name": "Phloen Chit" },
+    { "id": "E3", "name": "Nana" },
+    { "id": "E4", "name": "Asok" },
+    { "id": "W1", "name": "National Stadium" },
+    { "id": "S1", "name": "Ratchadamri" },
+    { "id": "S2", "name": "Sala Daeng" },
+    { "id": "BL13", "name": "Chatuchak Park" },
+    { "id": "BL14", "name": "Phahon Yothin" },
+    { "id": "BL15", "name": "Lat Phrao" },
+    { "id": "BL21", "name": "Sukhumvit" },
+    { "id": "BL22", "name": "Queen Sirikit National Convention Centre" },
+    { "id": "BL25", "name": "Silom" },
+    { "id": "BL26", "name": "Lumphini" }
+  ],
+  "lines": [
+    {
+      "line_id": "BTS-SUKHUMVIT",
+      "line_name": "BTS Sukhumvit Line",
+      "color": "#76B852",
+      "station_ids": ["N8", "N7", "N5", "N4", "N3", "N2", "N1", "CEN", "E1", "E2", "E3", "E4"],
+      "travel_time_between_stations": 3
+    },
+    {
+      "line_id": "BTS-SILOM",
+      "line_name": "BTS Silom Line",
+      "color": "#00885A",
+      "station_ids": ["W1", "CEN", "S1", "S2"],
+      "travel_time_between_stations": 3
+    },
+    {
+      "line_id": "MRT-BLUE",
+      "line_name": "MRT Blue Line",
+      "color": "#00529C",
+      "station_ids": ["BL13", "BL14", "BL15", "BL21", "BL22", "BL25", "BL26"],
+      "travel_time_between_stations": 4
+    }
+  ],
+  "transfers": [
+    { "from_station_id": "N8", "to_station_id": "BL13", "transfer_time": 8 },
+    { "from_station_id": "E4", "to_station_id": "BL21", "transfer_time": 5 },
+    { "from_station_id": "S2", "to_station_id": "BL25", "transfer_time": 6 }
+  ]
+}
