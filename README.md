@@ -1,3 +1,9 @@
+Of course. It's a great practice to keep your `README.md` file updated as your project evolves. The recent changes to make the backend production-ready are significant, and the instructions for running the project have changed.
+
+Here is the updated `README.md` file that reflects the use of Gunicorn and environment variables for your backend.
+
+-----
+
 # BKK Transit Route Finder App
 
 A mobile application built with Flutter and Python to help users find optimal public transit routes in Bangkok, Thailand, using the BTS and MRT train systems.
@@ -26,6 +32,8 @@ This project is a client-server application designed to provide the fastest rout
 
   - **Language:** Python 3
   - **Framework:** Flask
+  - **WSGI Server:** Gunicorn
+  - **Configuration:** python-dotenv
   - **Core Algorithm:** Dijkstra's algorithm for shortest path calculation.
   - **Data:** `database.json` for storing transit network data.
 
@@ -41,7 +49,7 @@ This project is a client-server application designed to provide the fastest rout
 
 The application follows a simple and effective client-server model:
 
-  - **Backend API (The Brain):** A Python Flask server is responsible for all business logic. It reads the `database.json` file, builds a graph representation of the transit network, and runs the pathfinding algorithm based on the user's request. This keeps the frontend app lightweight.
+  - **Backend API (The Brain):** A Python Flask server, run with Gunicorn, is responsible for all business logic. It reads the `database.json` file, builds a graph representation of the transit network, and runs the pathfinding algorithm based on the user's request. This keeps the frontend app lightweight.
   - **Flutter App (The Client):** The mobile app's sole responsibilities are to provide a user interface and communicate with the backend via REST API calls. It sends the user's selections (stations, preference) to the backend and beautifully displays the route result it receives.
 
 -----
@@ -95,15 +103,6 @@ The backend exposes two main API endpoints.
           "start_station": "Mo Chit",
           "end_station": "Siam",
           "stops": 6
-        },
-        {
-          "type": "board",
-          "line_name": "BTS Silom Line",
-          "line_color": "#00885A",
-          "operating_hours": "05:30 - 00:42",
-          "start_station": "Siam",
-          "end_station": "Sala Daeng",
-          "stops": 2
         }
       ],
       "total_stations": 8,
@@ -125,50 +124,67 @@ Follow these steps to get the application running on your local machine.
 
 ### 1\. Backend Setup
 
-First, create a `requirements.txt` file inside the `backend_api` folder to manage dependencies.
+These steps prepare and run the backend on a production-grade server.
 
-**File:** `backend_api/requirements.txt`
-
-```
-Flask
-```
-
-Now, run the following commands from the project's **root directory**:
+**A. Navigate to the Backend Directory**
 
 ```bash
-# 1. Navigate into the backend directory
-cd backend_api
+cd bkk_transit_app/backend_api
+```
 
-# 2. Create a Python virtual environment
+**B. Create and Activate Virtual Environment**
+
+```bash
+# Create the environment (only needs to be done once)
 python3 -m venv venv
 
-# 3. Activate the virtual environment
+# Activate the environment (do this every time you open a new terminal)
 # On macOS/Linux:
 source venv/bin/activate
 # On Windows:
 .\\venv\\Scripts\\activate
-
-# 4. Install the required packages
-pip install -r requirements.txt
-
-# 5. Run the backend server
-# The server will run on port 5002 as configured in app.py
-python app.py
 ```
 
-Leave this terminal window open. Your backend is now running\!
+**C. Create Project Files**
+
+1.  Create a `requirements.txt` file in the `backend_api` folder with the following content:
+    ```
+    Flask
+    gunicorn
+    python-dotenv
+    ```
+2.  Create a `.env` file in the `backend_api` folder. This file helps manage local settings.
+    ```
+    PORT=5002
+    ```
+
+**D. Install Dependencies**
+
+```bash
+pip install -r requirements.txt
+```
+
+**E. Run the Production Server**
+Use this command to start the backend:
+
+```bash
+gunicorn --workers 4 --bind 0.0.0.0:5002 app:app
+```
+
+Your backend is now running on port `5002` and ready for connections. Leave this terminal window open.
 
 ### 2\. Frontend Setup
 
-Open a **new terminal window** and follow these steps from the project's **root directory**:
+Open a **new terminal window** and follow these steps.
+
+**A. Navigate to the Frontend Directory**
 
 ```bash
-# 1. Navigate into the Flutter app directory
-cd frontend_flutter/transit_app_ui
+cd bkk_transit_app/frontend_flutter/transit_app_ui
 ```
 
-**2. Configure the API Address:**
-This is the most important step. Open `lib/services/api_service.dart` and edit the `baseUrl` variable to point to your computer's IP address.
+**B. Configure the API Address**
+This is a crucial step. Open `lib/services/api_service.dart` and ensure the `baseUrl` variable points to the correct address where your backend is running.
 
   - If running on an **iOS Simulator**:
     ```dart
@@ -178,23 +194,23 @@ This is the most important step. Open `lib/services/api_service.dart` and edit t
     ```dart
     final String baseUrl = "http://10.0.2.2:5002/api";
     ```
-  - If running on a **physical phone**: Find your computer's local IP address (e.g., `192.168.1.100`) and make sure your phone is on the same Wi-Fi network.
+  - If running on a **physical phone** (and your computer and phone are on the same Wi-Fi):
     ```dart
-    // Replace with your computer's actual IP address
+    // Replace 192.168.1.100 with your computer's actual local IP address
     final String baseUrl = "http://192.168.1.100:5002/api";
     ```
 
-**3. Run the Flutter App:**
+**C. Run the Flutter App**
 
 ```bash
-# 3. Get the Flutter dependencies
+# Get the Flutter dependencies
 flutter pub get
 
-# 4. Run the application
+# Run the application
 flutter run
 ```
 
-The BKK Transit App should now launch on your selected device and be fully connected to your local backend.
+The BKK Transit App will now launch on your device and be fully connected to your production-style backend server.
 
 # BKK Transit Route Finder App (Thai Ver.)
 
